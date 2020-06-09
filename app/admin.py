@@ -1,4 +1,6 @@
 from django.contrib import admin
 from .models import *
-# Register your models here.
-admin.site.register(Update)
+from .forms import UpdateForm
+class UpdateAdmin(admin.ModelAdmin):
+    form = UpdateForm
+admin.site.register(Update, UpdateAdmin)
