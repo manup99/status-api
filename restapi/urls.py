@@ -6,6 +6,8 @@ urlpatterns = [
     path('create_gen',StatusCreateGeneric.as_view()),
     path('get_gen/<int:id>',StatusRetrieveSerializer.as_view()),
     path('update_gen/<int:id>', StatusUpdateGeneric.as_view()),
-    path('del_gen/<int:id>', StatusDeleteGeneric.as_view())
-
+    path('del_gen/<int:id>', StatusDeleteGeneric.as_view()),
+    path('ret_upd_del/<int:id>',StatusDeleteRetriveUpdateGeneric.as_view()),
+    path('create_lis_mix',StatusCreateListMixin.as_view()),
+    path('single_crudl',StatusCRUDL.as_view()),
 ]

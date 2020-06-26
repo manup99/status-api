@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'app',
     'restapi',
-    'rest_framework'
+    'rest_framework',
+    'rest_registration',
+    'rest_framework.authtoken'
 ]
 
 MIDDLEWARE = [
@@ -121,3 +123,26 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+REST_REGISTRATION = {
+    'REGISTER_VERIFICATION_URL': 'http://127.0.0.1:8000/verify-user/',
+    'RESET_PASSWORD_VERIFICATION_URL': 'http://127.0.0.1:8000/reset-password/',
+    'REGISTER_EMAIL_VERIFICATION_URL': 'http://127.0.0.1:8000/verify-email/',
+
+    'VERIFICATION_FROM_EMAIL': 'no-reply@example.com',
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
+
+
+EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST='smtp.gmail.com'
+EMAIL_PORT=587
+EMAIL_USE_TLS=True
+EMAIL_HOST_USER='aushadhiclinic@gmail.com'
+EMAIL_HOST_PASSWORD='20november1970'
+
