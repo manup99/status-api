@@ -59,7 +59,7 @@ def create():
         "user":"1",
         "content":"yes bro"
     }
-    r = requests.post(BASE_URL+'pure_list',data=json.dumps(data))
+    r = requests.post(BASE_URL+'pure_list',json=json.dumps(data))
     return r.json()
 def delete1():
     res = requests.delete(BASE_URL+'pure_single/'+str(15))

@@ -61,7 +61,9 @@ class UpdateModelListView(CSRFExemptMixin, View):
 
     def post(self,request,*args,**kwargs):
         #print(json.loads(request.body))
-        form = UpdateForm(json.loads(request.body))
+        print(request.body)
+        print(request.POST)
+        form = UpdateForm(request.POST)
         if form.is_valid():
             obj = form.save(commit=True)
             obj_data = obj.serialize1()

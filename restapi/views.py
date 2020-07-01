@@ -5,6 +5,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics,mixins
 from django.shortcuts import get_object_or_404
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.permissions import IsAuthenticated
 import  json
 """Here we are Response and APIView to retrieve list and """
 class StatusListSearchAPIView(APIView):
@@ -123,6 +125,8 @@ class StatusCRUDL(mixins.CreateModelMixin,
         return obj
     def post(self,request,*args,**kwargs):
         print(request.body)
+        print(request.POST.get('content'))
+        print(request.FILES)
         print(request.data)
         return self.create(request,*args,**kwargs)
 
@@ -132,7 +136,6 @@ class StatusCRUDL(mixins.CreateModelMixin,
         return None
 
     def get(self,request,*args,**kwargs):
-        data=json.loads(request.body)
         print(request.body)
         print(request.data)
         passed_id = request.GET.get('id')
@@ -145,3 +148,44 @@ class StatusCRUDL(mixins.CreateModelMixin,
 
     def delete(self,request,*args,**kwargs):
         return self.destroy(request,*args,**kwargs)
+
+
+class StatusRetUpdDel(mixins.DestroyModelMixin,
+                      mixins.UpdateModelMixin,
+                      generics.RetrieveAPIView):
+    permission_classes=[]
+    authentication_classes=[]
+    queryset=Status.objects.all()
+    serializer_class=StatusSerializer
+    lookup_field='id'
+    def delete(self,request,*args,**kwargs):
+        return self.destroy(request,*args,**kwargs)
+
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+
+
+
+"""For session or token based authentication it is necessary to put user inside read_only_field"""
+class StatusListCreate(mixins.CreateModelMixin,
+                       generics.ListAPIView):
+    permission_classes=(IsAuthenticated,)
+    queryset=Status.objects.all()
+    serializer_class=StatusSerializer
+
+    def get_queryset(self):
+        qs=Status.objects.all()
+        q=self.request.GET.get('q')
+        if q is not None:
+            qs=qs.filter(content__icontains=q)
+        return qs
+    def perform_create(self,serializer):
+        if serializer.is_valid():
+            serializer.save(user=self.request.user)
+
+
+    def post(self,request,*args,**kwargs):
+        return self.create(request,*args,**kwargs)

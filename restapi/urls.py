@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import *
+from .jwt_views import views
 urlpatterns = [
     path('list1', StatusListSearchAPIView.as_view()),
     path('list2/', StatusListSearchGeneric.as_view()),
@@ -10,4 +11,10 @@ urlpatterns = [
     path('ret_upd_del/<int:id>',StatusDeleteRetriveUpdateGeneric.as_view()),
     path('create_lis_mix',StatusCreateListMixin.as_view()),
     path('single_crudl',StatusCRUDL.as_view()),
+    path('double_crudl2/<int:id>',StatusRetUpdDel.as_view()),
+    path('double_crudl2', StatusListCreate.as_view()),
+    ###JWT_VIEWS
+    path('hello',views.HelloView.as_view()),
+    path('login',views.AuthView.as_view()),
+    path('register',views.RegisterAuth.as_view())
 ]
